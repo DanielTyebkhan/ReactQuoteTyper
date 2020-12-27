@@ -1,0 +1,1 @@
+# Code for React Implementation of [QuoteSpeed](https://tyebkhan.github.io/QuoteTyper/)
