@@ -1,5 +1,9 @@
 import React from "react";
+
 import { IQuote } from "../Interfaces";
+import QuoteText from "./QuoteText";
+import { Lang } from "../English";
+
 import './QuoteSpace.css';
 
 interface Props {
@@ -34,15 +38,13 @@ export class QuoteSpace extends React.Component<Props, State> {
     return (
       <div className='QuoteSpace'>
         <h1>
-          QUOTESPEED
+          {Lang.QuoteSpeed}
         </h1>
         <h2>
-          Press Begin and Type the Quote
+          {Lang.BeginText}
         </h2>
         <QuoteText quote={this.state.quote}/>
       </div>
     );
   }
 }
-
-const QuoteText = (props: { quote: IQuote | undefined }) => <h3 className='Quote'>{props.quote?.content}</h3>
