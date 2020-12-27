@@ -1,7 +1,8 @@
 import React from "react";
 
-import { IQuote } from "../Interfaces";
 import QuoteText from "./QuoteText";
+
+import { IQuote } from "../Interfaces";
 import { Lang } from "../English";
 
 import './QuoteSpace.css';

@@ -6,6 +6,9 @@ interface Props {
 
 export default function QuoteText(props: Props) {
   return (
-    <h3 className='Quote'>{props.quote?.content}</h3>
+    <div>
+      <h3 className='Quote'>{props.quote?.content}</h3>
+      <p> - {props.quote?.originator.name}</p>
+    </div>
   );
 };
