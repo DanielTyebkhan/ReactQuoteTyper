@@ -14,13 +14,20 @@ interface Props {
 
 interface State {
   quote: IQuote;
+  remaining: string[],
+  incorrect: string[],
 }
 
 export class QuoteSpace extends React.Component<Props, State> {
   state: Readonly<State> = {} as State;
 
   componentDidMount() {
-    this.fetchQuote().then(current => this.setState({quote: current}));
+    this.fetchQuote().then((current) => {
+      this.setState({
+        quote: current,
+        remaining: Array.from(current.content) 
+      })
+    });
   }
 
   fetchQuote = async (): Promise<IQuote> => {

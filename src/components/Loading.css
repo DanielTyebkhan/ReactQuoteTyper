@@ -1,3 +1,7 @@
+.loadingWrapper {
+  padding: 10px;
+}
+
 .loadingIcon {
   border: 16px solid #f3f3f3; 
   border-top: 16px solid #1f4068; 

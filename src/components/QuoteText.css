@@ -1,7 +1,9 @@
-.QuoteText {
+.quoteText {
   text-align: left;
+  width: 50%;
+  margin: auto;
 }
 
-.Indented {
+.indented {
   margin-left: 15%;
 }

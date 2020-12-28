@@ -7,9 +7,9 @@ interface Props {
 
 export default function QuoteText(props: Props) {
   return (
-    <div className='QuoteText'>
+    <div className='quoteText'>
       <h3>{props.quote?.content}</h3>
-      <p className='Indented'> {'- ' + props.quote?.originator.name}</p>
+      <p className='indented'> {'- ' + props.quote?.originator.name}</p>
     </div>
   );
 };
