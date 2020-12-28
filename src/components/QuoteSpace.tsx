@@ -6,6 +6,7 @@ import { IQuote } from "../Interfaces";
 import { Lang } from "../English";
 
 import './QuoteSpace.css';
+import { Loading } from "./Loading";
 
 interface Props {
 }
@@ -44,7 +45,7 @@ export class QuoteSpace extends React.Component<Props, State> {
         <h2>
           {Lang.BeginText}
         </h2>
-        <QuoteText quote={this.state.quote}/>
+        {this.state.quote ? <QuoteText quote={this.state.quote}/> : <Loading />}
       </div>
     );
   }
