@@ -1,4 +1,5 @@
 import { IQuote } from '../Interfaces';
+import './QuoteText.css';
 
 interface Props {
   quote: IQuote | undefined;
@@ -6,9 +7,9 @@ interface Props {
 
 export default function QuoteText(props: Props) {
   return (
-    <div>
-      <h3 className='Quote'>{props.quote?.content}</h3>
-      <p> {'- ' + props.quote?.originator.name}</p>
+    <div className='QuoteText'>
+      <h3>{props.quote?.content}</h3>
+      <p className='Indented'> {'- ' + props.quote?.originator.name}</p>
     </div>
   );
 };
