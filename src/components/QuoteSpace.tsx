@@ -16,6 +16,7 @@ interface State {
   quote: IQuote;
   remaining: string[],
   incorrect: string[],
+  started: boolean
 }
 
 export class QuoteSpace extends React.Component<Props, State> {
@@ -25,7 +26,8 @@ export class QuoteSpace extends React.Component<Props, State> {
     this.fetchQuote().then((current) => {
       this.setState({
         quote: current,
-        remaining: Array.from(current.content) 
+        remaining: Array.from(current.content),
+        started: false
       })
     });
   }
@@ -49,7 +51,7 @@ export class QuoteSpace extends React.Component<Props, State> {
   };
 
   handleStart = (event: React.MouseEvent): void => {
-    console.log('starting');
+    this.setState({started: true});
   }
 
   render() {
@@ -62,7 +64,7 @@ export class QuoteSpace extends React.Component<Props, State> {
           {Lang.BeginText}
         </h2>
         {this.state.quote ? <QuoteText quote={this.state.quote}/> : <Loading />}
-        <TypingField clickHandler={this.handleStart} onKeyPress={this.handleInput} button={true} seconds={5}/>
+        <TypingField clickHandler={this.handleStart} onKeyPress={this.handleInput} button={!this.state.started} seconds={5}/>
       </div>
     );
   }
