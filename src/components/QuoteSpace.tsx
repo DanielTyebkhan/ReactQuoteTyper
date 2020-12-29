@@ -48,6 +48,10 @@ export class QuoteSpace extends React.Component<Props, State> {
     console.log(event.key);
   };
 
+  handleStart = (event: React.MouseEvent): void => {
+    console.log('starting');
+  }
+
   render() {
     return (
       <div className='QuoteSpace'>
@@ -58,7 +62,7 @@ export class QuoteSpace extends React.Component<Props, State> {
           {Lang.BeginText}
         </h2>
         {this.state.quote ? <QuoteText quote={this.state.quote}/> : <Loading />}
-        <TypingField onKeyPress={this.handleInput}/>
+        <TypingField clickHandler={this.handleStart} onKeyPress={this.handleInput} button={true} seconds={5}/>
       </div>
     );
   }
