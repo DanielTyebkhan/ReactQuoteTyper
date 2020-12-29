@@ -44,6 +44,10 @@ export class QuoteSpace extends React.Component<Props, State> {
     return quote;
   };
 
+  handleInput = (event: React.KeyboardEvent) => {
+    console.log(event.key);
+  };
+
   render() {
     return (
       <div className='QuoteSpace'>
@@ -54,7 +58,7 @@ export class QuoteSpace extends React.Component<Props, State> {
           {Lang.BeginText}
         </h2>
         {this.state.quote ? <QuoteText quote={this.state.quote}/> : <Loading />}
-        <TypingField />
+        <TypingField onKeyPress={this.handleInput}/>
       </div>
     );
   }

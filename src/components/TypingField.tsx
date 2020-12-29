@@ -1,7 +1,10 @@
 import './TypingField.css';
 
-export default function TypingField() {
+interface Props {
+  onKeyPress: any,
+}
+export default function TypingField(props: Props) {
   return (
-    <textarea className='InputField'></textarea>
+    <textarea onKeyPress={props.onKeyPress} className='InputField'></textarea>
   );
 }
