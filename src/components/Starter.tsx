@@ -9,6 +9,6 @@ interface Props {
 
 export default function Starter(props: Props) {
   return(
-    <div className='starter'>{props.button ? <button onClick={props.clickHandler}>{Lang.Start}</button> : props.seconds}</div>
+    <div className='starter'>{props.button ? <button className='startButton' onClick={props.clickHandler}>{Lang.Start}</button> : props.seconds}</div>
   )
 }
