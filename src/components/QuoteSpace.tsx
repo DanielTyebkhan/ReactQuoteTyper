@@ -16,6 +16,7 @@ interface State {
   quote: IQuote;
   remaining: string[],
   incorrect: number,
+  time: number,
   started: boolean
 }
 
@@ -64,15 +65,29 @@ export class QuoteSpace extends React.Component<Props, State> {
     else if (event.key.length === 1) {
       ++incorrect;
     }
+    let time = this.state.time;
+    if (remaining.length === 0) {
+      time = performance.now() - time;
+      this.endGame(time/60000);
+    }
     console.log(event.key, incorrect, remaining);
     this.setState({
       incorrect: incorrect,
-      remaining: remaining
+      remaining: remaining,
+      time: time,
+      started: remaining.length > 0
     });
   };
 
+  endGame = (time: number): void => {
+    alert('it took ' + time + ' minutes');
+  };
+
   handleStart = (event: React.MouseEvent): void => {
-    this.setState({started: true});
+    this.setState({
+      started: true,
+      time: performance.now()
+    });
   }
 
   render() {
@@ -90,3 +105,4 @@ export class QuoteSpace extends React.Component<Props, State> {
     );
   }
 }
+
