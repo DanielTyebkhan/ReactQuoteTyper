@@ -57,6 +57,7 @@ export class QuoteSpace extends React.Component<Props, State> {
         --incorrect;
       }
       else {
+        event.preventDefault();
         event.stopPropagation();
       }
     }
