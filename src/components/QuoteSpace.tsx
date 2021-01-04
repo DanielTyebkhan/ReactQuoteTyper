@@ -26,7 +26,7 @@ export class QuoteSpace extends React.Component<Props, State> {
     this.fetchQuote().then((current) => {
       this.setState({
         quote: current,
-        remaining: Array.from(current.content),
+        remaining: Array.from(current.content).reverse(),
         incorrect: 0,
         started: false
       })
@@ -43,8 +43,6 @@ export class QuoteSpace extends React.Component<Props, State> {
       }
     };
     let quote: IQuote = await (await fetch(url, requestOptions)).json();
-    this.setState({remaining: quote.content.split('').reverse()})
-    console.log(quote);
     return quote;
   };
 
@@ -54,8 +52,13 @@ export class QuoteSpace extends React.Component<Props, State> {
     if (incorrect === 0 && event.key === remaining[remaining.length - 1]) {
       remaining.pop();
     }
-    else if (event.key === 'Backspace' && incorrect > 0) {
-      --incorrect;
+    else if (event.key === 'Backspace') {
+      if (incorrect > 0) {
+        --incorrect;
+      }
+      else {
+        event.stopPropagation();
+      }
     }
     else if (event.key.length === 1) {
       ++incorrect;
