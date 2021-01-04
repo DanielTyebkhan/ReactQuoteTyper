@@ -15,7 +15,7 @@ interface Props {
 interface State {
   quote: IQuote;
   remaining: string[],
-  incorrect: string[],
+  incorrect: number,
   started: boolean
 }
 
@@ -27,6 +27,7 @@ export class QuoteSpace extends React.Component<Props, State> {
       this.setState({
         quote: current,
         remaining: Array.from(current.content),
+        incorrect: 0,
         started: false
       })
     });
@@ -42,12 +43,28 @@ export class QuoteSpace extends React.Component<Props, State> {
       }
     };
     let quote: IQuote = await (await fetch(url, requestOptions)).json();
+    this.setState({remaining: quote.content.split('').reverse()})
     console.log(quote);
     return quote;
   };
 
   handleInput = (event: React.KeyboardEvent) => {
-    console.log(event.key);
+    let incorrect = this.state.incorrect;
+    let remaining = this.state.remaining;
+    if (incorrect === 0 && event.key === remaining[remaining.length - 1]) {
+      remaining.pop();
+    }
+    else if (event.key === 'Backspace' && incorrect > 0) {
+      --incorrect;
+    }
+    else if (event.key.length === 1) {
+      ++incorrect;
+    }
+    console.log(event.key, incorrect, remaining);
+    this.setState({
+      incorrect: incorrect,
+      remaining: remaining
+    });
   };
 
   handleStart = (event: React.MouseEvent): void => {
@@ -64,7 +81,7 @@ export class QuoteSpace extends React.Component<Props, State> {
           {Lang.BeginText}
         </h2>
         {this.state.quote ? <QuoteText quote={this.state.quote}/> : <Loading />}
-        <TypingField clickHandler={this.handleStart} onKeyPress={this.handleInput} button={!this.state.started} seconds={5}/>
+        <TypingField clickHandler={this.handleStart} onKeyDown={this.handleInput} button={!this.state.started} seconds={5}/>
       </div>
     );
   }
