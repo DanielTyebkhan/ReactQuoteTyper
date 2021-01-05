@@ -79,11 +79,15 @@ export class QuoteSpace extends React.Component<Props, State> {
       this.endGame(time/60000);
     }
     console.log(event.key, incorrect, remaining);
+    let seconds = this.state.seconds;
+    if (remaining.length === 0) {
+      seconds = COUNTDOWN_TIME;
+    }
     this.setState({
       incorrect: incorrect,
       remaining: remaining,
       time: time,
-      seconds: remaining.length > 0 ? 0 : -1
+      seconds: seconds,
     });
   };
 
