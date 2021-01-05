@@ -11,6 +11,13 @@ interface Props {
 }
 
 export default function TypingField(props: Props) {
-  return props.button ? <Starter clickHandler={props.clickHandler} button={props.button} seconds={props.seconds} /> : 
-         <textarea onKeyDown={props.onKeyDown} className='InputField'></textarea>
+  if (props.button) {
+    return <Starter clickHandler={props.clickHandler} button={props.button} seconds={props.seconds} />;
+  }
+  else if (props.seconds >= 0) {
+    return <div>{props.seconds}</div>;
+  }
+  else {
+    return <textarea onKeyDown={props.onKeyDown} className='InputField'></textarea>;
+  }
 }

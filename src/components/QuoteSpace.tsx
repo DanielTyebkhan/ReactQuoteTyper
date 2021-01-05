@@ -17,8 +17,11 @@ interface State {
   remaining: string[],
   incorrect: number,
   time: number,
-  started: boolean
+  seconds: number,
+  mounted: boolean
 }
+
+const COUNTDOWN_TIME = 4;
 
 export class QuoteSpace extends React.Component<Props, State> {
   state: Readonly<State> = {} as State;
@@ -29,9 +32,14 @@ export class QuoteSpace extends React.Component<Props, State> {
         quote: current,
         remaining: Array.from(current.content).reverse(),
         incorrect: 0,
-        started: false
+        seconds: COUNTDOWN_TIME,
+        mounted: true
       })
     });
+  }
+
+  componentWillUnmount() {
+    this.setState({mounted: false});
   }
 
   fetchQuote = async (): Promise<IQuote> => {
@@ -75,7 +83,7 @@ export class QuoteSpace extends React.Component<Props, State> {
       incorrect: incorrect,
       remaining: remaining,
       time: time,
-      started: remaining.length > 0
+      seconds: remaining.length > 0 ? 0 : -1
     });
   };
 
@@ -84,11 +92,22 @@ export class QuoteSpace extends React.Component<Props, State> {
   };
 
   handleStart = (event: React.MouseEvent): void => {
+    this.runCountdown();
     this.setState({
-      started: true,
-      time: performance.now()
+      time: performance.now(),
     });
-  }
+  };
+
+  runCountdown = (): void => {
+    if (this.state.mounted) {
+      let seconds = this.state.seconds;
+      console.log(seconds);
+      if (seconds >= 0) {
+        this.setState({seconds: seconds - 1});
+        window.setTimeout(() => this.runCountdown(), 1000);
+      }
+    }
+  };
 
   render() {
     return (
@@ -100,9 +119,8 @@ export class QuoteSpace extends React.Component<Props, State> {
           {Lang.BeginText}
         </h2>
         {this.state.quote ? <QuoteText quote={this.state.quote}/> : <Loading />}
-        <TypingField clickHandler={this.handleStart} onKeyDown={this.handleInput} button={!this.state.started} seconds={5}/>
+        <TypingField clickHandler={this.handleStart} onKeyDown={this.handleInput} button={this.state.seconds === COUNTDOWN_TIME} seconds={this.state.seconds}/>
       </div>
     );
   }
 }
-
