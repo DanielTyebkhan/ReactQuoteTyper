@@ -8,7 +8,7 @@ class ListNode<T> {
   }
 }
 
-export class LinkedList<T> {
+export default class LinkedList<T> {
   private head: ListNode<T> | undefined;
   private tail: ListNode<T> | undefined;
   private size: number;
@@ -34,7 +34,7 @@ export class LinkedList<T> {
     ++this.size;
   }
 
-  append(data: T): void {
+  insertAtTail(data: T): void {
     (<ListNode<T>>this.tail).next = new ListNode<T>(data);
     this.tail = this.tail?.next;
     ++this.size;
