@@ -27,15 +27,7 @@ export class QuoteSpace extends React.Component<Props, State> {
   state: Readonly<State> = {} as State;
 
   componentDidMount() {
-    this.fetchQuote().then((current) => {
-      this.setState({
-        quote: current,
-        remaining: Array.from(current.content).reverse(),
-        incorrect: 0,
-        seconds: COUNTDOWN_TIME,
-        mounted: true
-      })
-    });
+    this.setupGame();
   }
 
   componentWillUnmount() {
@@ -88,6 +80,18 @@ export class QuoteSpace extends React.Component<Props, State> {
       remaining: remaining,
       time: time,
       seconds: seconds,
+    });
+  };
+
+  setupGame = () => {
+    this.fetchQuote().then((current) => {
+      this.setState({
+        quote: current,
+        remaining: Array.from(current.content).reverse(),
+        incorrect: 0,
+        seconds: COUNTDOWN_TIME,
+        mounted: true
+      })
     });
   };
 
