@@ -35,7 +35,7 @@ export default class LinkedList<T> {
   }
 
   insertAtTail(data: T): void {
-    (<ListNode<T>>this.tail).next = new ListNode<T>(data);
+    (this.tail as ListNode<T>).next = new ListNode<T>(data);
     this.tail = this.tail?.next;
     ++this.size;
   }
@@ -53,5 +53,18 @@ export default class LinkedList<T> {
       runner = runner?.next;
     }
     return runner?.data;
+  }
+
+  toString(): string {
+    let stringForm = '';
+    let runner = this.head;
+    if (runner?.data !== undefined) {
+      while (runner.next) {
+        stringForm += runner.data + ', ';
+        runner = runner.next;
+      }
+    stringForm += runner.data;
+    }
+    return stringForm;
   }
 }
