@@ -4,9 +4,12 @@ import 'mocha';
 
 import LinkedList from './LinkedList';
 
+/**
+ * Test Suite for LinkedList class
+ */
 describe('LinkedList', () => {
   it('construct no elements', () => {
-    const result = new LinkedList<string>([]).toString();
+    const result = new LinkedList<string>().toString();
     expect(result).to.equal('');
   });
 
@@ -21,7 +24,7 @@ describe('LinkedList', () => {
   });
 
   it('size 0', () => {
-    const result = new LinkedList<boolean>([]).getLength();
+    const result = new LinkedList<boolean>().getLength();
     expect(result).to.equal(0);
   });
 
@@ -31,7 +34,7 @@ describe('LinkedList', () => {
   });
 
   it('Add head to empty', () => {
-    let llist = new LinkedList<number>([]);
+    let llist = new LinkedList<number>();
     llist.insertAtHead(1);
     expect(llist.toString()).to.equal('1');
     expect(llist.getLength()).to.equal(1);
@@ -45,7 +48,7 @@ describe('LinkedList', () => {
   });
 
   it('Add tail to empty', () => {
-    let llist = new LinkedList<number>([]);
+    let llist = new LinkedList<number>();
     llist.insertAtTail(1);
     expect(llist.toString()).to.equal('1');
     expect(llist.getLength()).to.equal(1);
@@ -59,7 +62,7 @@ describe('LinkedList', () => {
   });
 
   it('Remove from empty', () => {
-    let llist = new LinkedList<number>([]);
+    let llist = new LinkedList<number>();
     const result = llist.removeAt(2);
     expect(result).to.equal(undefined);
     expect(llist.toString()).to.equal('');
