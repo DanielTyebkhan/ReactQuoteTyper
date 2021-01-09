@@ -14,9 +14,9 @@ export default class LinkedList<T> {
   private size: number;
 
   constructor(items: T[]) {
-    this.head = new ListNode<T>(items[0]);
+    this.head = items.length > 0 ? new ListNode<T>(items[0]) : undefined;
     this.size = items.length;
-    let runner = this.head;
+    let runner = this.head as ListNode<T>;
     for (let i = 1; i < this.getLength(); ++i) {
       runner.next = new ListNode<T>(items[i]);
       runner = runner.next;
