@@ -8,13 +8,14 @@ import { Lang } from "../English";
 import './QuoteSpace.css';
 import { Loading } from "./Loading";
 import TypingField from "./TypingField";
+import Queue from "../DataStructures/Queue";
 
 interface Props {
 }
 
 interface State {
   quote: IQuote;
-  remaining: string[],
+  remaining: Queue<string>,
   incorrect: number,
   time: number,
   seconds: number,
@@ -49,9 +50,9 @@ export class QuoteSpace extends React.Component<Props, State> {
 
   handleInput = (event: React.KeyboardEvent) => {
     let incorrect = this.state.incorrect;
-    let remaining = this.state.remaining;
-    if (incorrect === 0 && event.key === remaining[remaining.length - 1]) {
-      remaining.pop();
+    let remaining = JSON.parse(JSON.stringify(this.state.remaining)) as Queue<string>;
+    if (incorrect === 0 && event.key === remaining.peek()) {
+      remaining.dequeue();
     }
     else if (event.key === 'Backspace') {
       if (incorrect > 0) {
@@ -66,13 +67,13 @@ export class QuoteSpace extends React.Component<Props, State> {
       ++incorrect;
     }
     let time = this.state.time;
-    if (remaining.length === 0) {
+    if (remaining.getLength() === 0) {
       time = performance.now() - time;
       this.endGame(time/60000);
     }
     console.log(event.key, incorrect, remaining);
     let seconds = this.state.seconds;
-    if (remaining.length === 0) {
+    if (remaining.getLength() === 0) {
       seconds = COUNTDOWN_TIME;
     }
     this.setState({
@@ -87,7 +88,7 @@ export class QuoteSpace extends React.Component<Props, State> {
     this.fetchQuote().then((current) => {
       this.setState({
         quote: current,
-        remaining: Array.from(current.content).reverse(),
+        remaining: new Queue<string>(Array.from(current.content).reverse()),
         incorrect: 0,
         seconds: COUNTDOWN_TIME,
         mounted: true

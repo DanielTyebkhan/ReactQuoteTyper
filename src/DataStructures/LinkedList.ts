@@ -117,6 +117,22 @@ export default class LinkedList<T> {
   }
 
   /**
+   * Convert the linked list into an array
+   */
+  getArray(): T[] {
+    if (this.getLength() === 0) {
+      return [];
+    }
+    const lst = [];
+    let runner = this.head;
+    while (runner) {
+      lst.push(runner.data);
+      runner = runner.next;
+    }
+    return lst;
+  }
+
+  /**
    * Converts the linked list into a string of form 'e1, e2,...,en'
    * for each ei in a LinkedList of size n
    */

@@ -148,4 +148,14 @@ describe('LinkedList', () => {
     expect(llist.toString()).to.equal('2, 4, 1, 5');
     expect(llist.getLength()).to.equal(4);
   });
+
+  it('Get Aray Empty', () => {
+    let result = new LinkedList<number>().getArray().toString();
+    expect(result).to.equal([].toString());
+  });
+
+  it('Get Array 3', () => {
+    let result = new LinkedList<boolean>([true, false, true]).getArray().toString();
+    expect(result).to.equal([true, false, true].toString());
+  });
 });

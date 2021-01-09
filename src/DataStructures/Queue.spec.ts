@@ -1,7 +1,6 @@
 /* eslint-disable jest/valid-expect */ 
 import { expect } from 'chai';
 import 'mocha';
-import { isTemplateSpan } from 'typescript';
 
 import Queue from './Queue';
 

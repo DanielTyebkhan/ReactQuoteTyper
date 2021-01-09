@@ -44,6 +44,13 @@ export default class Queue<T> {
   }
 
   /**
+   * Clones the Queue
+   */
+  clone(): Queue<T> {
+    return new Queue<T>(this.data.getArray());
+  }
+
+  /**
    * Converts the queue into a string of the form
    *    '>e1, e1,..., en'
    * for an n element queue in which e1 is the next element
