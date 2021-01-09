@@ -105,4 +105,44 @@ describe('LinkedList', () => {
     expect(llist.toString()).to.equal('2, 4, 1, 5');
     expect(llist.getLength()).to.equal(4);
   });
+
+  it('Value at head', () => {
+    let llist = new LinkedList<number>([2, 4, 1, 5]);
+    const result = llist.valueAt(0);
+    expect(result).to.equal(2);
+    expect(llist.toString()).to.equal('2, 4, 1, 5');
+    expect(llist.getLength()).to.equal(4);
+  });
+
+  it('Value at tail', () => {
+    let llist = new LinkedList<number>([2, 4, 1, 5]);
+    const result = llist.valueAt(3);
+    expect(result).to.equal(5);
+    expect(llist.toString()).to.equal('2, 4, 1, 5');
+    expect(llist.getLength()).to.equal(4);
+  });
+
+  it('Value at center', () => {
+    let llist = new LinkedList<number>([2, 4, 1, 5]);
+    const result = llist.valueAt(2);
+    expect(result).to.equal(1);
+    expect(llist.toString()).to.equal('2, 4, 1, 5');
+    expect(llist.getLength()).to.equal(4);
+  });
+
+  it('Value at invalid', () => {
+    let llist = new LinkedList<number>([2, 4, 1, 5]);
+    const result = llist.valueAt(20);
+    expect(result).to.equal(undefined);
+    expect(llist.toString()).to.equal('2, 4, 1, 5');
+    expect(llist.getLength()).to.equal(4);
+  });
+
+  it('Value at invalid negative', () => {
+    let llist = new LinkedList<number>([2, 4, 1, 5]);
+    const result = llist.valueAt(-20);
+    expect(result).to.equal(undefined);
+    expect(llist.toString()).to.equal('2, 4, 1, 5');
+    expect(llist.getLength()).to.equal(4);
+  });
 });

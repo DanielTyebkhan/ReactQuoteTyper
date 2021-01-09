@@ -68,9 +68,12 @@ export default class LinkedList<T> {
   }
 
   valueAt(index: number): T | undefined {
-    let runner: ListNode<T> | undefined = this.head;
-    for (let i = 0; i < index + 1; ++i) {
-      runner = runner?.next;
+    if (index < 0 || index >= this.getLength()) {
+      return undefined;
+    }
+    let runner = this.head as ListNode<T>;
+    for (let i = 0; i < index; ++i) {
+      runner = runner?.next as ListNode<T>;
     }
     return runner?.data;
   }
