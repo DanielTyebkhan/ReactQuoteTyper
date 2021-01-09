@@ -50,7 +50,7 @@ export class QuoteSpace extends React.Component<Props, State> {
 
   handleInput = (event: React.KeyboardEvent) => {
     let incorrect = this.state.incorrect;
-    let remaining = JSON.parse(JSON.stringify(this.state.remaining)) as Queue<string>;
+    let remaining = this.state.remaining.clone();
     if (incorrect === 0 && event.key === remaining.peek()) {
       remaining.dequeue();
     }
@@ -71,7 +71,7 @@ export class QuoteSpace extends React.Component<Props, State> {
       time = performance.now() - time;
       this.endGame(time/60000);
     }
-    console.log(event.key, incorrect, remaining);
+    console.log(event.key, incorrect, remaining.toString());
     let seconds = this.state.seconds;
     if (remaining.getLength() === 0) {
       seconds = COUNTDOWN_TIME;
@@ -88,7 +88,7 @@ export class QuoteSpace extends React.Component<Props, State> {
     this.fetchQuote().then((current) => {
       this.setState({
         quote: current,
-        remaining: new Queue<string>(Array.from(current.content).reverse()),
+        remaining: new Queue<string>(Array.from(current.content)),
         incorrect: 0,
         seconds: COUNTDOWN_TIME,
         mounted: true
