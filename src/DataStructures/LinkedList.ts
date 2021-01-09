@@ -46,9 +46,23 @@ export default class LinkedList<T> {
     ++this.size;
   }
 
-  removeAtHead(): T | undefined {
-    let data = this.head?.data;
-    this.head = this.head?.next;
+  removeAt(index: number): T | undefined {
+    if (index >= this.getLength() || index < 0) {
+      return undefined;
+    }
+    let data = undefined;
+    if (index === 0) {
+      data = this.head?.data;
+      this.head = this.head?.next;
+    }
+    else {
+      let runner = this.head as ListNode<T>;
+      for (let i = 1; i < index; ++i) {
+        runner = runner.next as ListNode<T>;
+      }
+      data = runner.next?.data;
+      runner.next = runner.next?.next;
+    }
     --this.size;
     return data;
   }
