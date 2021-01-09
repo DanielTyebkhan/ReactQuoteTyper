@@ -43,4 +43,11 @@ describe('LinkedList', () => {
     const result = llist.toString();
     expect(result).to.equal('true, true, false, false');
   });
+
+  it('Add tail to empty', () => {
+    let llist = new LinkedList<number>([]);
+    llist.insertAtTail(1);
+    const result = llist.toString();
+    expect(result).to.equal('1');
+  });
 });

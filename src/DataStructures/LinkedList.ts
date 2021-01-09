@@ -35,8 +35,14 @@ export default class LinkedList<T> {
   }
 
   insertAtTail(data: T): void {
-    (this.tail as ListNode<T>).next = new ListNode<T>(data);
-    this.tail = this.tail?.next;
+    let node = new ListNode<T>(data);
+    if (this.tail) {
+      this.tail.next = node;
+      this.tail = this.tail.next;
+    }
+    else {
+      this.head = this.tail = node;
+    }
     ++this.size;
   }
 
