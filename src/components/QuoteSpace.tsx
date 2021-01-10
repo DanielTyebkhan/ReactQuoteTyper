@@ -14,12 +14,15 @@ interface Props {
 }
 
 interface State {
-  quote: IQuote;
+  quote: IQuote,
+  words: number,
+  completed: string[],
   remaining: Queue<string>,
-  incorrect: number,
+  incorrect: string[],
   time: number,
   seconds: number,
-  mounted: boolean
+  mounted: boolean,
+  mistakes: number
 }
 
 const COUNTDOWN_TIME = 4;
@@ -49,29 +52,37 @@ export class QuoteSpace extends React.Component<Props, State> {
   };
 
   handleInput = (event: React.KeyboardEvent) => {
-    let incorrect = this.state.incorrect;
+    let key = event.key;
+    let incorrect = this.state.incorrect.slice();
     let remaining = this.state.remaining.clone();
-    if (incorrect === 0 && event.key === remaining.peek()) {
-      remaining.dequeue();
+    let mistakes = this.state.mistakes;
+    let completed = this.state.completed;
+    if (incorrect.length === 0 && event.key === remaining.peek()) {
+      completed.push(remaining.dequeue() as string);
     }
-    else if (event.key === 'Backspace') {
-      if (incorrect > 0) {
-        --incorrect;
+    else if (key === 'Backspace') {
+      if (incorrect.length > 0) {
+        incorrect.pop();
       }
       else {
         event.preventDefault();
         event.stopPropagation();
       }
     }
-    else if (event.key.length === 1) {
-      ++incorrect;
+    else if (key.length === 1) {
+      incorrect.push(key);
+      ++mistakes;
     }
     let time = this.state.time;
     if (remaining.getLength() === 0) {
       time = performance.now() - time;
-      this.endGame(time/60000);
+      let minutes = time/60000;
+      let wpm = Math.round(this.state.words / minutes);
+      let chars = this.state.quote.content.length;
+      let accuracy = Math.round((chars - mistakes) / chars * 100);
+      this.endGame(wpm, accuracy);
     }
-    console.log(event.key, incorrect, remaining.toString());
+    console.log(key, completed, incorrect, remaining.toString());
     let seconds = this.state.seconds;
     if (remaining.getLength() === 0) {
       seconds = COUNTDOWN_TIME;
@@ -81,6 +92,8 @@ export class QuoteSpace extends React.Component<Props, State> {
       remaining: remaining,
       time: time,
       seconds: seconds,
+      mistakes: mistakes,
+      completed: completed,
     });
   };
 
@@ -88,16 +101,19 @@ export class QuoteSpace extends React.Component<Props, State> {
     this.fetchQuote().then((current) => {
       this.setState({
         quote: current,
+        words: current.content.split(' ').length + 1,
         remaining: new Queue<string>(Array.from(current.content)),
-        incorrect: 0,
+        incorrect: [],
+        mistakes: 0,
         seconds: COUNTDOWN_TIME,
-        mounted: true
+        mounted: true,
+        completed: [],
       })
     });
   };
 
-  endGame = (time: number): void => {
-    alert('it took ' + time + ' minutes');
+  endGame = (wpm: number, accuracy: number): void => {
+    alert(`You typed ${wpm} wpm with an accuracy of ${accuracy}%.`);
   };
 
   handleStart = (event: React.MouseEvent): void => {
