@@ -14,7 +14,7 @@ interface Props {
 }
 
 interface State {
-  quote: IQuote,
+  quote: IQuote | undefined,
   words: number,
   completed: string[],
   remaining: Queue<string>,
@@ -113,6 +113,7 @@ export class QuoteSpace extends React.Component<Props, State> {
   };
 
   endGame = (wpm: number, accuracy: number): void => {
+    this.setState({quote: undefined});
     alert(`You typed ${wpm} wpm with an accuracy of ${accuracy}%.`);
     this.setupGame();
   };
