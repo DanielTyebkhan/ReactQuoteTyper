@@ -78,7 +78,7 @@ export class QuoteSpace extends React.Component<Props, State> {
       time = performance.now() - time;
       let minutes = time/60000;
       let wpm = Math.round(this.state.words / minutes);
-      let chars = this.state.quote.content.length;
+      let chars = this.state.quote?.content.length as number;
       let accuracy = Math.round((chars - mistakes) / chars * 100);
       this.endGame(wpm, accuracy);
     }
