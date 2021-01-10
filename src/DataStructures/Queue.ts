@@ -51,6 +51,13 @@ export default class Queue<T> {
   }
 
   /**
+   * Turns the queue into an array
+   */
+  getArray(): T[] {
+    return this.data.getArray();
+  }
+
+  /**
    * Converts the queue into a string of the form
    *    '>e1, e1,..., en'
    * for an n element queue in which e1 is the next element

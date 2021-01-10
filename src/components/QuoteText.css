@@ -7,3 +7,11 @@
 .indented {
   margin-left: 15%;
 }
+
+#correct {
+  color: green;
+}
+
+#incorrect {
+  background-color: red;
+}
