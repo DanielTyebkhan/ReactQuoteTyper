@@ -114,6 +114,7 @@ export class QuoteSpace extends React.Component<Props, State> {
 
   endGame = (wpm: number, accuracy: number): void => {
     alert(`You typed ${wpm} wpm with an accuracy of ${accuracy}%.`);
+    this.setupGame();
   };
 
   handleStart = (event: React.MouseEvent): void => {
