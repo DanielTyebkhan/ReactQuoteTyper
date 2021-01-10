@@ -1,10 +1,11 @@
 import './TypingField.css';
 import { Lang } from '../English'
+import { useEffect, useRef } from 'react';
 
 interface TypingFieldProps {
   button: boolean,
   seconds: number,
-  onKeyDown: any,
+  onKeyDown: (event: React.KeyboardEvent) => void,
   clickHandler: (event: React.MouseEvent) => void,
 }
 
@@ -17,9 +18,23 @@ export default function TypingField(props: TypingFieldProps) {
     );
   }
   else if (props.seconds >= 0) {
-    return <div className="starter"><p className='countdown'>{props.seconds}</p></div>;
+    return (
+      <div className="starter">
+        <p className='countdown'>{props.seconds}</p>
+      </div>
+    );
   }
   else {
-    return <textarea onKeyDown={props.onKeyDown} className='InputField'></textarea>;
+    return <InputBox onKeyDown={props.onKeyDown} />
   }
+}
+
+interface InputBoxProps {
+  onKeyDown: (event: React.KeyboardEvent) => void
+}
+
+function InputBox(props: InputBoxProps) {
+  const field = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => field.current?.focus());
+  return <textarea ref={field} onKeyDown={props.onKeyDown} className='InputField'></textarea>;
 }
