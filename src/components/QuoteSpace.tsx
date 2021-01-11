@@ -26,6 +26,7 @@ interface State {
 }
 
 const COUNTDOWN_TIME = 4;
+const API_TIMEOUT_WAIT = 7000;
 
 export class QuoteSpace extends React.Component<Props, State> {
   state: Readonly<State> = {} as State;
@@ -47,10 +48,17 @@ export class QuoteSpace extends React.Component<Props, State> {
         'X-RapidAPI-Key': '82e49981edmsh51f070fdf1cb9dap1930d5jsn458ee671c233'
       }
     };
-    let quote = {} as IQuote;
+    let quote: IQuote | undefined = undefined;
     do {
-      quote = await (await fetch(url, requestOptions)).json();
-    } while (!this.isTypeable(quote.content));
+      quote = await fetch(url, requestOptions).then(async (response) => {
+        if (!response.ok) {
+          console.log('invalid quote received: retrying');
+          await new Promise(r => setTimeout(r, API_TIMEOUT_WAIT));
+          return undefined;
+        }
+        return response.json();
+      });
+    } while (!quote || !this.isTypeable(quote.content));
     return quote;
   };
 
