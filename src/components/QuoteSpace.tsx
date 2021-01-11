@@ -47,9 +47,22 @@ export class QuoteSpace extends React.Component<Props, State> {
         'X-RapidAPI-Key': '82e49981edmsh51f070fdf1cb9dap1930d5jsn458ee671c233'
       }
     };
-    let quote: IQuote = await (await fetch(url, requestOptions)).json();
+    let quote = {} as IQuote;
+    do {
+      quote = await (await fetch(url, requestOptions)).json();
+    } while (!this.isTypeable(quote.content));
     return quote;
   };
+
+  isTypeable = (quote: string): boolean => {
+    for (let i = 0; i < quote.length; ++i) {
+      let code = quote.charCodeAt(i);
+      if (code < 32 || code > 126) {
+        return false;
+      }
+    }
+    return true;
+  }; 
 
   handleInput = (event: React.KeyboardEvent) => {
     let key = event.key;
