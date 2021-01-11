@@ -49,16 +49,17 @@ export class QuoteSpace extends React.Component<Props, State> {
       }
     };
     let quote: IQuote | undefined = undefined;
-    do {
+    while(!quote) {
       quote = await fetch(url, requestOptions).then(async (response) => {
-        if (!response.ok) {
+        let fetched = await response.json().then(data => data as IQuote);
+        if (!response.ok || !this.isTypeable(fetched.content)) {
           console.log('invalid quote received: retrying');
           await new Promise(r => setTimeout(r, API_TIMEOUT_WAIT));
           return undefined;
         }
-        return response.json();
+        return fetched;
       });
-    } while (!quote || !this.isTypeable(quote.content));
+    }
     return quote;
   };
 
