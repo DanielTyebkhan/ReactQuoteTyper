@@ -30,3 +30,7 @@
   display: flex;
   margin: auto;
 }
+
+.startButton:disabled {
+  background-color: gray;
+}

@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 
 interface TypingFieldProps {
   button: boolean,
+  loading: boolean,
   seconds: number,
   onKeyDown: (event: React.KeyboardEvent) => void,
   clickHandler: (event: React.MouseEvent) => void,
@@ -13,7 +14,7 @@ export default function TypingField(props: TypingFieldProps) {
   if (props.button) {
     return ( 
       <div className='starter'> 
-        <button className='startButton' onClick={props.clickHandler}>{Lang.Start}</button>
+        <button disabled={props.loading} className='startButton' onClick={props.clickHandler}>{Lang.Start}</button>
       </div>
     );
   }

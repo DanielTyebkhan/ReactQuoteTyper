@@ -171,7 +171,7 @@ export class QuoteSpace extends React.Component<Props, State> {
           <QuoteText correct={this.state.completed.join('')} incorrect={this.state.incorrect.length} quote={this.state.quote.content} author={this.state.quote.originator.name}/> 
           : <Loading />
         }
-        <TypingField clickHandler={this.handleStart} onKeyDown={this.handleInput} button={this.state.seconds === COUNTDOWN_TIME} seconds={this.state.seconds}/>
+        <TypingField loading={this.state.quote === undefined} clickHandler={this.handleStart} onKeyDown={this.handleInput} button={this.state.seconds === COUNTDOWN_TIME} seconds={this.state.seconds}/>
       </div>
     );
   }
