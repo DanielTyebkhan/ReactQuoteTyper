@@ -6,7 +6,7 @@ interface TypingFieldProps {
   button: boolean,
   loading: boolean,
   seconds: number,
-  onKeyDown: (event: React.KeyboardEvent) => void,
+  inputMethod: (event: React.FormEvent<HTMLTextAreaElement>) => void,
   clickHandler: (event: React.MouseEvent) => void,
 }
 
@@ -26,12 +26,12 @@ export default function TypingField(props: TypingFieldProps) {
     );
   }
   else {
-    return <InputBox onKeyDown={props.onKeyDown} />
+    return <InputBox inputMethod={props.inputMethod} />
   }
 }
 
 interface InputBoxProps {
-  onKeyDown: (event: React.KeyboardEvent) => void
+  inputMethod: (event: React.FormEvent<HTMLTextAreaElement>) => void
 }
 
 function InputBox(props: InputBoxProps) {
@@ -40,5 +40,5 @@ function InputBox(props: InputBoxProps) {
   const fixCursor = () => {
     console.log('clicked');
   };
-  return <textarea onClick={fixCursor} ref={field} onKeyDown={props.onKeyDown} className='InputField'></textarea>;
+  return <textarea onClick={fixCursor} ref={field} onInput={props.inputMethod} className='InputField'></textarea>;
 }

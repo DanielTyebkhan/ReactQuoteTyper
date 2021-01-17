@@ -8,16 +8,14 @@ import { Lang } from "../English";
 import './QuoteSpace.css';
 import { Loading } from "./Loading";
 import TypingField from "./TypingField";
-import Queue from "../DataStructures/Queue";
 
 interface Props {
 }
 
 interface State {
   quote: IQuote | undefined,
-  words: number,
   completed: string[],
-  remaining: Queue<string>,
+  remaining: string,
   incorrect: string[],
   time: number,
   seconds: number,
@@ -73,13 +71,54 @@ export class QuoteSpace extends React.Component<Props, State> {
     return true;
   }; 
 
-  handleInput = (event: React.KeyboardEvent) => {
-    let key = event.key;
+  handleInput = (event: React.FormEvent<HTMLTextAreaElement>) => {
+    let status = event.currentTarget.value;
+    let quote = this.state.quote?.content as string;
+    let mistakes = 0;
+    let prevMistakes = this.state.mistakes;
+    let completed = [];
+    let incorrect = [];
+    let remaining = '';
+    let correct = true;
+    for (let i = 0; i < status.length; ++i) {
+      if (status[i] === quote[i] && correct) {
+        completed.push(status[i])
+      }
+      else {
+        correct = false;
+        ++mistakes;
+        incorrect.push(status[i]);
+      }
+    }
+    mistakes -= prevMistakes;
+    console.log('Mistakes: ' + mistakes)
+    remaining = quote.slice(status.length);
+    if (remaining.length === 0) {
+      let time = performance.now() - this.state.time;
+      let minutes = time/60000;
+      let words = quote.split(' ').length + 1;
+      let chars = quote.length;
+      let wpm = Math.round(words / minutes);
+      let accuracy = Math.round((chars - mistakes)/chars) * 100;
+      this.endGame(wpm, accuracy);
+    }
+    this.setState({
+      mistakes: mistakes,
+      completed: completed,
+      incorrect: incorrect,
+      remaining: remaining
+    });
+  };
+
+/*
+  handleInput = (event: React.FormEvent<HTMLTextAreaElement>) => {
+    let key = event.currentTarget.value;
+    console.log(key);
     let incorrect = this.state.incorrect.slice();
     let remaining = this.state.remaining.clone();
     let mistakes = this.state.mistakes;
     let completed = this.state.completed;
-    if (incorrect.length === 0 && event.key === remaining.peek()) {
+    if (incorrect.length === 0 && key === remaining.peek()) {
       completed.push(remaining.dequeue() as string);
     }
     else if (key === 'Backspace') {
@@ -118,13 +157,12 @@ export class QuoteSpace extends React.Component<Props, State> {
       completed: completed,
     });
   };
-
+*/
   setupGame = () => {
     this.fetchQuote().then((current) => {
       this.setState({
         quote: current,
-        words: current.content.split(' ').length + 1,
-        remaining: new Queue<string>(Array.from(current.content)),
+        remaining: '',
         incorrect: [],
         mistakes: 0,
         seconds: COUNTDOWN_TIME,
@@ -171,7 +209,7 @@ export class QuoteSpace extends React.Component<Props, State> {
           <QuoteText correct={this.state.completed.join('')} incorrect={this.state.incorrect.length} quote={this.state.quote.content} author={this.state.quote.originator.name}/> 
           : <Loading />
         }
-        <TypingField loading={this.state.quote === undefined} clickHandler={this.handleStart} onKeyDown={this.handleInput} button={this.state.seconds === COUNTDOWN_TIME} seconds={this.state.seconds}/>
+        <TypingField loading={this.state.quote === undefined} clickHandler={this.handleStart} inputMethod={this.handleInput} button={this.state.seconds === COUNTDOWN_TIME} seconds={this.state.seconds}/>
       </div>
     );
   }
