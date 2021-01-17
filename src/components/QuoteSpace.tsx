@@ -20,7 +20,7 @@ interface State {
   time: number,
   seconds: number,
   mounted: boolean,
-  mistakes: number
+  mistakes: Set<number>
 }
 
 const COUNTDOWN_TIME = 4;
@@ -74,8 +74,7 @@ export class QuoteSpace extends React.Component<Props, State> {
   handleInput = (event: React.FormEvent<HTMLTextAreaElement>) => {
     let status = event.currentTarget.value;
     let quote = this.state.quote?.content as string;
-    let mistakes = 0;
-    let prevMistakes = this.state.mistakes;
+    let mistakes = this.state.mistakes;
     let completed = [];
     let incorrect = [];
     let remaining = '';
@@ -86,14 +85,10 @@ export class QuoteSpace extends React.Component<Props, State> {
       }
       else {
         correct = false;
-        ++mistakes;
+        mistakes.add(i);
         incorrect.push(status[i]);
       }
     }
-    if (mistakes > 0) {
-      mistakes -= prevMistakes;
-    }
-    console.log('Mistakes: ' + mistakes)
     remaining = quote.slice(status.length);
     if (remaining.length === 0 && incorrect.length === 0) {
       let time = performance.now() - this.state.time;
@@ -101,7 +96,8 @@ export class QuoteSpace extends React.Component<Props, State> {
       let words = quote.split(' ').length + 1;
       let chars = quote.length;
       let wpm = Math.round(words / minutes);
-      let accuracy = Math.round((chars - mistakes)/chars) * 100;
+      console.log(mistakes, mistakes.size);
+      let accuracy = Math.round((chars - mistakes.size)/chars * 100);
       this.endGame(wpm, accuracy);
     }
     this.setState({
@@ -118,7 +114,7 @@ export class QuoteSpace extends React.Component<Props, State> {
         quote: current,
         remaining: '',
         incorrect: [],
-        mistakes: 0,
+        mistakes: new Set<number>(),
         seconds: COUNTDOWN_TIME,
         mounted: true,
         completed: [],
