@@ -37,8 +37,5 @@ interface InputBoxProps {
 function InputBox(props: InputBoxProps) {
   const field = useRef<HTMLTextAreaElement>(null);
   useEffect(() => field.current?.focus());
-  const fixCursor = () => {
-    console.log('clicked');
-  };
-  return <textarea onClick={fixCursor} ref={field} onInput={props.inputMethod} className='InputField'></textarea>;
+  return <textarea ref={field} onInput={props.inputMethod} className='InputField'></textarea>;
 }
