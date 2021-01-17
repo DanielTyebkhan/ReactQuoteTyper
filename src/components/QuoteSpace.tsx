@@ -90,10 +90,12 @@ export class QuoteSpace extends React.Component<Props, State> {
         incorrect.push(status[i]);
       }
     }
-    mistakes -= prevMistakes;
+    if (mistakes > 0) {
+      mistakes -= prevMistakes;
+    }
     console.log('Mistakes: ' + mistakes)
     remaining = quote.slice(status.length);
-    if (remaining.length === 0) {
+    if (remaining.length === 0 && incorrect.length === 0) {
       let time = performance.now() - this.state.time;
       let minutes = time/60000;
       let words = quote.split(' ').length + 1;
@@ -106,58 +108,10 @@ export class QuoteSpace extends React.Component<Props, State> {
       mistakes: mistakes,
       completed: completed,
       incorrect: incorrect,
-      remaining: remaining
+      remaining: remaining,
     });
   };
 
-/*
-  handleInput = (event: React.FormEvent<HTMLTextAreaElement>) => {
-    let key = event.currentTarget.value;
-    console.log(key);
-    let incorrect = this.state.incorrect.slice();
-    let remaining = this.state.remaining.clone();
-    let mistakes = this.state.mistakes;
-    let completed = this.state.completed;
-    if (incorrect.length === 0 && key === remaining.peek()) {
-      completed.push(remaining.dequeue() as string);
-    }
-    else if (key === 'Backspace') {
-      if (incorrect.length > 0) {
-        incorrect.pop();
-      }
-      else {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-    }
-    else if (key.length === 1) {
-      incorrect.push(key);
-      ++mistakes;
-    }
-    let time = this.state.time;
-    if (remaining.getLength() === 0) {
-      time = performance.now() - time;
-      let minutes = time/60000;
-      let wpm = Math.round(this.state.words / minutes);
-      let chars = this.state.quote?.content.length as number;
-      let accuracy = Math.round((chars - mistakes) / chars * 100);
-      this.endGame(wpm, accuracy);
-    }
-    console.log(key, completed, incorrect, remaining.toString());
-    let seconds = this.state.seconds;
-    if (remaining.getLength() === 0) {
-      seconds = COUNTDOWN_TIME;
-    }
-    this.setState({
-      incorrect: incorrect,
-      remaining: remaining,
-      time: time,
-      seconds: seconds,
-      mistakes: mistakes,
-      completed: completed,
-    });
-  };
-*/
   setupGame = () => {
     this.fetchQuote().then((current) => {
       this.setState({
@@ -173,7 +127,7 @@ export class QuoteSpace extends React.Component<Props, State> {
   };
 
   endGame = (wpm: number, accuracy: number): void => {
-    this.setState({quote: undefined});
+    this.setState({quote: undefined, seconds: COUNTDOWN_TIME});
     alert(`You typed ${wpm} wpm with an accuracy of ${accuracy}%.`);
     this.setupGame();
   };
