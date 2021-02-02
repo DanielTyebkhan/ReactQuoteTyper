@@ -11,7 +11,7 @@ interface TypingFieldProps {
 }
 
 export default function TypingField(props: TypingFieldProps) {
-  if (props.button) {
+  if (props.button || props.loading) {
     return ( 
       <div className='starter'> 
         <button disabled={props.loading} className='startButton' onClick={props.clickHandler}>{Lang.Start}</button>
